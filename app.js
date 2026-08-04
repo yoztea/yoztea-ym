@@ -227,6 +227,12 @@ function renderStatus() {
       $('#ym-days').textContent = st.days;
       $('#ym-days-label').textContent = '天';
       startPetals();
+    } else if (ev === st.period && st.kind === 'coming') {
+      // 查看的是最新一条(预测基准):主卡片显示距下次姨妈
+      $('#ym-title').textContent = '距下次姨妈';
+      $('#ym-days').textContent = st.days;
+      $('#ym-days-label').textContent = '天';
+      stopPetals();
     } else {
       // 查看历史记录:距今天多少天
       const d = daysBetween(ev.start, todayStr());
