@@ -1,4 +1,12 @@
 {
-  "periods": [],
-  "updatedAt": null
+  "periods": [
+    {
+      "id": "1785814202303-duofdy",
+      "start": "2025-05-31",
+      "end": "2025-06-04",
+      "flow": "medium",
+      "note": "情绪低落"
+    }
+  ],
+  "updatedAt": "2026-08-04T03:30:02.303Z"
 }
