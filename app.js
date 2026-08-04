@@ -480,6 +480,10 @@ function clearSettings() {
 async function refresh() {
   try {
     const data = await readData();
+    // 统一按开始日期降序排,最新在前
+    if (Array.isArray(data.periods)) {
+      data.periods = data.periods.slice().sort((a, b) => b.start.localeCompare(a.start));
+    }
     state.data = data;
     // 保持 current 在范围内
     const len = (data.periods || []).length;
