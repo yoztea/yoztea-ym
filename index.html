@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#FFB7C5">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="stylesheet" href="style.css">
+  <title>柚子姨妈</title>
+</head>
+<body>
+  <main class="wrap">
+    <button class="gear" id="ym-gear" aria-label="设置" type="button">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
+          d="M12 2.5l1.1 2.2 2.4-.4-1.1 2.2 1.9 1.6 2.3-.9-.4 2.4 2.4.9-1.6 1.9 1.6 1.9-2.4.9.4 2.4-2.3-.9-1.9 1.6 1.1 2.2-2.4-.4L12 21.5l-1.1-2.2-2.4.4 1.1-2.2-1.9-1.6-2.3.9.4-2.4-2.4-.9 1.6-1.9-1.6-1.9 2.4-.9-.4-2.4 2.3.9 1.9-1.6L8.5 4.3l2.4.4L12 2.5z"/>
+        <circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+      </svg>
+    </button>
+
+    <div class="deco">YOZTEA · 柚子姨妈</div>
+
+    <section class="card">
+      <h1 class="title" id="ym-title">加载中…</h1>
+
+      <div class="countdown">
+        <div class="cell">
+          <div class="num-big" id="ym-days">--</div>
+          <div class="label" id="ym-days-label">天</div>
+        </div>
+        <div class="cell">
+          <div class="num-mid" id="ym-cycle">--</div>
+          <div class="label">天周期</div>
+        </div>
+      </div>
+
+      <div class="meta" id="ym-meta" hidden>
+        <span class="chip" id="ym-flow"></span>
+        <span class="note" id="ym-note"></span>
+      </div>
+
+      <nav class="dots" id="ym-dots" aria-label="历史记录切换"></nav>
+    </section>
+
+    <button class="add-btn" id="ym-add" aria-label="新增记录" type="button" hidden>
+      <svg viewBox="0 0 100 100" width="34" height="34" aria-hidden="true">
+        <g fill="#FFB7C5">
+          <circle cx="50" cy="30" r="16"/>
+          <circle cx="78" cy="50" r="16"/>
+          <circle cx="68" cy="80" r="16"/>
+          <circle cx="32" cy="80" r="16"/>
+          <circle cx="22" cy="50" r="16"/>
+        </g>
+        <circle cx="50" cy="56" r="9" fill="#FFD3DC"/>
+        <g stroke="#FFB7C5" stroke-width="3" stroke-linecap="round">
+          <line x1="50" y1="46" x2="50" y2="30"/>
+          <line x1="50" y1="46" x2="64" y2="42"/>
+          <line x1="50" y1="46" x2="36" y2="42"/>
+        </g>
+      </svg>
+    </button>
+
+    <div class="hint" id="ym-hint" hidden></div>
+
+    <!-- 新增/编辑模态 -->
+    <div class="modal" id="ym-modal" hidden>
+      <div class="modal-card">
+        <h2 id="ym-modal-title">新增记录</h2>
+        <label class="field">开始日期
+          <input id="ym-in-start" type="date">
+        </label>
+        <label class="field">结束日期(可空)
+          <input id="ym-in-end" type="date">
+        </label>
+        <div class="field">经量
+          <div class="chips" id="ym-in-flow">
+            <button type="button" class="chip-btn" data-flow="light">轻 💧</button>
+            <button type="button" class="chip-btn" data-flow="medium">中 🌸</button>
+            <button type="button" class="chip-btn" data-flow="heavy">多 🩸</button>
+          </div>
+        </div>
+        <label class="field">备注/症状(可空)
+          <textarea id="ym-in-note" rows="2" placeholder="痛经、情绪、特别事件…"></textarea>
+        </label>
+        <div class="modal-actions">
+          <button type="button" id="ym-cancel" class="btn-ghost">取消</button>
+          <button type="button" id="ym-save" class="btn-primary">保存</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 设置面板 -->
+    <div class="modal" id="ym-settings" hidden>
+      <div class="modal-card">
+        <h2>设置</h2>
+        <p class="setting-tip">只在男友(管理员)手机上填写。女友端无需配置。</p>
+        <label class="field">GitHub 用户名 / 仓库(如 yoztea/yoztea-ym)
+          <input id="ym-in-repo" type="text" placeholder="owner/repo" autocomplete="off">
+        </label>
+        <label class="field">Fine-grained PAT(只授权本仓库 Contents 读写)
+          <input id="ym-in-token" type="password" placeholder="github_pat_…" autocomplete="off">
+        </label>
+        <p class="status" id="ym-status"></p>
+        <div class="modal-actions">
+          <button type="button" id="ym-clear" class="btn-ghost">清除 token</button>
+          <button type="button" id="ym-ok" class="btn-primary">保存</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 长按编辑/删除 -->
+    <div class="modal" id="ym-action" hidden>
+      <div class="modal-card">
+        <h2>编辑记录</h2>
+        <p class="action-date" id="ym-action-date"></p>
+        <div class="modal-actions">
+          <button type="button" id="ym-action-edit" class="btn-ghost">编辑</button>
+          <button type="button" id="ym-action-del" class="btn-danger">删除</button>
+        </div>
+        <button type="button" id="ym-action-cancel" class="btn-link">取消</button>
+      </div>
+    </div>
+  </main>
+
+  <div class="petals" id="ym-petals" aria-hidden="true"></div>
+
+  <script type="module" src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(function () {});
+    }
+  </script>
+</body>
+</html>

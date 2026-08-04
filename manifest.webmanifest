@@ -1,0 +1,11 @@
+{
+  "name": "柚子姨妈",
+  "short_name": "姨妈",
+  "display": "standalone",
+  "theme_color": "#FFB7C5",
+  "background_color": "#FFF8F5",
+  "start_url": "./",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
