@@ -25,6 +25,12 @@ export function todayStr() {
   return `${t.getFullYear()}-${mm}-${dd}`;
 }
 
+// YYYY-MM-DD → M月D日(去前导零)
+export function fmtDate(s) {
+  const [, m, d] = (s || '').split('-');
+  return `${parseInt(m, 10)}月${parseInt(d, 10)}日`;
+}
+
 // 平均周期(天):相邻 start 之差;不足 2 条返回默认值
 export function avgCycle(periods) {
   if (!Array.isArray(periods) || periods.length < 2) return DEFAULT_CYCLE;
@@ -227,27 +233,23 @@ function renderStatus() {
       $('#ym-days').textContent = st.days;
       $('#ym-days-label').textContent = '天';
       startPetals();
-    } else if (ev === st.period && st.kind === 'coming') {
-      // 查看的是最新一条(预测基准):主卡片显示距下次姨妈
-      $('#ym-title').textContent = '距下次姨妈';
-      $('#ym-days').textContent = st.days;
-      $('#ym-days-label').textContent = '天';
-      stopPetals();
     } else {
-      // 查看历史记录:距今天多少天
+      // 查看记录:显示日期范围 + 距今天数
+      const range = ev.end
+        ? `${fmtDate(ev.start)} ~ ${fmtDate(ev.end)}`
+        : fmtDate(ev.start);
       const d = daysBetween(ev.start, todayStr());
+      $('#ym-title').textContent = range;
       if (d === 0) {
-        $('#ym-title').textContent = `姨妈第 1 天`;
-        $('#ym-days').textContent = 1;
+        $('#ym-days').textContent = 0;
+        $('#ym-days-label').textContent = '今天开始';
       } else if (d > 0) {
-        $('#ym-title').textContent = `${Math.abs(d)} 天前开始`;
-        $('#ym-days').textContent = Math.abs(d);
+        $('#ym-days').textContent = d;
+        $('#ym-days-label').textContent = '天前';
       } else {
-        // 未来记录
-        $('#ym-title').textContent = `${Math.abs(d)} 天后开始`;
-        $('#ym-days').textContent = Math.abs(d);
+        $('#ym-days').textContent = -d;
+        $('#ym-days-label').textContent = '天后';
       }
-      $('#ym-days-label').textContent = '天';
       stopPetals();
     }
     $('#ym-cycle').textContent = avgCycle(arr);
@@ -263,7 +265,7 @@ function renderStatus() {
 
   // 全局状态提示(底部 hint)
   const hint = $('#ym-hint');
-  if (st.kind === 'coming' && st.period !== ev) {
+  if (st.kind === 'coming') {
     hint.hidden = false;
     hint.textContent = `距下次姨妈约 ${st.days} 天 · 预计 ${st.nextDate}`;
   } else if (st.kind === 'in' && st.period !== ev) {
