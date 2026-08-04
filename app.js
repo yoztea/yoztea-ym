@@ -397,7 +397,7 @@ async function saveRecord() {
   } else {
     periods.push(rec);
   }
-  periods.sort((a, b) => a.start.localeCompare(b.start));
+  periods.sort((a, b) => b.start.localeCompare(a.start));
 
   closeModal();
   try {
