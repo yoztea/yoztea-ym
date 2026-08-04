@@ -1,11 +1,12 @@
-const CACHE = 'yoztea-ym-v1';
+const CACHE = 'yoztea-ym-v2';
 const ASSETS = [
   './',
   './index.html',
   './app.js',
   './style.css',
   './manifest.webmanifest',
-  './icon.svg',
+  './icon-192.png',
+  './icon-512.png',
 ];
 
 self.addEventListener('install', (e) => {
